@@ -25,7 +25,7 @@ new(class, dict, ...)
 CODE:
   AV *result;
   SV *ref;
-  hashform form;
+  hashform pform;
   uint32_t nkeys;                                          /* number of keys */
   key      *keys;                                    /* head of list of keys */
   bstuff   *tab;                                       /* table indexed by b */
@@ -38,17 +38,17 @@ CODE:
   gencode  final;                                     /* code for final hash */
   uint32_t scramble[SCRAMBLE_LEN];            /* used in final hash function */
   /* default behavior */
-  form.mode = NORMAL_HM;
-  form.hashtype = STRING_HT;
-  form.perfect = MINIMAL_HP;
-  form.speed = SLOW_HS;
-  form.low_name = "perf";
-  form.high_name = "PERF";
+  pform.mode = NORMAL_HM;
+  pform.hashtype = STRING_HT;
+  pform.perfect = MINIMAL_HP;
+  pform.speed = SLOW_HS;
+  pform.low_name = "perf";
+  pform.high_name = "PERF";
   /* get keys */
   /* ... */
   /* Generate the [minimal] perfect hash */
   findhash(&tab, &alen, &blen, &salt, &final, 
-           scramble, &smax, keys, nkeys, form);
+           scramble, &smax, keys, nkeys, pform);
   /* ... */
   result = newAV();
   av_push(result, &PL_sv_undef);
