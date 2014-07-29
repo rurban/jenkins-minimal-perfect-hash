@@ -4,6 +4,7 @@ Bob.o
 Bob.bs
 MYMETA.json
 MYMETA.yml
+Makefile
 Makefile.old
 Makefile.orig
 lookupa.o
