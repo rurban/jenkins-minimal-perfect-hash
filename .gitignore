@@ -1,10 +1,9 @@
 *~
 Bob.c
 Bob.o
-Bob.xs
+Bob.bs
 MYMETA.json
 MYMETA.yml
-Makefile.PL
 Makefile.old
 Makefile.orig
 lookupa.o
