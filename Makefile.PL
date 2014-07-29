@@ -13,8 +13,7 @@ push(@extras,
 
 #TODO: integrate into proper build and depend rules
 if (! -e "bin/perfect") {
-  system($Config{'make'});
-  rename "Makefile", "Makefile.orig";
+  system($Config{'make'}, '-f', "Makefile.orig");
 }
 
 WriteMakefile(
