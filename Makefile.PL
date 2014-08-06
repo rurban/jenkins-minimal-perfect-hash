@@ -23,6 +23,7 @@ WriteMakefile(
   LIBS         => '-lm',
   XSPROTOARG   => '-noprototypes',
   VERSION_FROM => '../lib/Perfect/Hash/Bob.pm',
+  clean => { FILES => "Bob.gcno" },
   @extras
 );
 
