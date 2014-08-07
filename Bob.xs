@@ -6,6 +6,7 @@
 
 #if PERL_VERSION < 10
 #  define USE_PPPORT_H
+#  undef apply
 #endif
 
 #ifdef USE_PPPORT_H
