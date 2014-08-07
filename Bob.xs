@@ -4,11 +4,13 @@
 #include "perl.h"
 #include "XSUB.h"
 
+#if PERL_VERSION < 10
+#  define USE_PPPORT_H
+#endif
+
 #ifdef USE_PPPORT_H
-#  define NEED_sv_2pvbyte
-#  define NEED_sv_2pv_nolen
-#  define NEED_sv_pvn_force_flags
-#  include "ppport.h"
+#  define NEED_newRV_noinc
+#  include "../ppport.h"
 #endif
 
 #include "lookupa.h"
