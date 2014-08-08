@@ -2,14 +2,18 @@ use ExtUtils::MakeMaker;
 use Config;
 
 my @extras = ();
+my $EUMM_VER = $ExtUtils::MakeMaker::VERSION;
 push(@extras, CAPI => 'TRUE')
-    if (($PERL_VERSION >= 5.005) and ($OSNAME eq 'MSWin32')
-        and ($Config{archname} =~ /-object\b/i));
+  if (($PERL_VERSION >= 5.005) and ($OSNAME eq 'MSWin32')
+      and ($Config{archname} =~ /-object\b/i));
 
 push(@extras,
-    ABSTRACT => "XS interface to bob jenkins perfect hash",
-    AUTHOR   => 'Reini Urban')
-  if ($ExtUtils::MakeMaker::VERSION >= 5.4301);
+     ABSTRACT => "XS interface to bob jenkins perfect hash",
+     AUTHOR   => 'Reini Urban <rurban@cpan.org>')
+  if $EUMM_VER gt '5.4301';
+push(@extras,
+     LICENSE      => 'perl_5'), #bob itself is in public domain
+  if $EUMM_VER gt '6.17';
 
 #TODO: integrate into proper build and depend rules
 if (! -e "bin/perfect") {
