@@ -26,8 +26,8 @@ new(class, dict, ...)
   SV*  class
   SV*  dict
 CODE:
-  AV *result;
-  SV *ref;
+  AV *result, *xshash, *options;
+  int i;
   hashform pform;
   uint32_t nkeys;                                          /* number of keys */
   key      *keys;                                    /* head of list of keys */
@@ -40,24 +40,42 @@ CODE:
   reroot   *keyroot;                                       /* source of keys */
   gencode  final;                                     /* code for final hash */
   uint32_t scramble[SCRAMBLE_LEN];            /* used in final hash function */
-  /* default behavior */
+  /* default options */
   pform.mode = NORMAL_HM;
   pform.hashtype = STRING_HT;
   pform.perfect = MINIMAL_HP;
   pform.speed = SLOW_HS;
   pform.low_name = "perf";
   pform.high_name = "PERF";
+  /* override options */
+  /* ... */
   /* get keys */
   /* ... */
   /* Generate the [minimal] perfect hash */
   findhash(&tab, &alen, &blen, &salt, &final, 
            scramble, &smax, keys, nkeys, pform);
-  /* ... */
+  /* Do we really need to store all this? no struct?
+     _ bstuff **tab, uint32_t *alen, uint32_t *blen, uint32_t *salt,
+     gencode *final, uint32_t *scramble, uint32_t smax, key *keys, uint32_t nkeys,
+	 hashform *form */
+  xshash = newAV();
+  av_push(xshash, newSViv(PTR2IV(tab)));
+  av_push(xshash, newSViv(alen));
+  av_push(xshash, newSViv(blen));
+  av_push(xshash, newSViv(salt));
+  av_push(xshash, newSViv(PTR2IV(&final)));
+  av_push(xshash, newSViv(PTR2IV(scramble)));
+  av_push(xshash, newSViv(smax));
+  av_push(xshash, newSViv(PTR2IV(keys)));
+  av_push(xshash, newSViv(nkeys));
   result = newAV();
-  av_push(result, &PL_sv_undef);
-  av_push(result, &PL_sv_undef);
-  ref = newRV_noinc((SV*)result);
-  RETVAL = sv_bless(ref, gv_stashpv(__PACKAGE__, 1));
+  av_push(result, newRV((SV*)xshash));
+  options = newAV();
+  for (i=2; i<items; i++) { /* CHECKME */
+    av_push(options, ST(i));
+  }
+  av_push(result, newRV((SV*)options));
+  RETVAL = sv_bless(newRV_noinc((SV*)result), gv_stashpv(__PACKAGE__, GV_ADDWARN));
 OUTPUT:
   RETVAL
 
@@ -66,6 +84,14 @@ perfecthash(ph, key)
     SV*  ph
     SV*  key
 CODE:
-    RETVAL = -1;
+  /* NYI */
+  RETVAL = -1;
 OUTPUT:
-    RETVAL
+  RETVAL
+
+void
+save_c(ph, fileprefix)
+    SV*    ph
+    char*  fileprefix
+CODE:
+  /* better do that in C, not in perl */
