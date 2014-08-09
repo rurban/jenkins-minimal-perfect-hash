@@ -53,7 +53,7 @@ CODE:
   /* ... */
   /* Generate the [minimal] perfect hash */
   findhash(&tab, &alen, &blen, &salt, &final, 
-           scramble, &smax, keys, nkeys, pform);
+           scramble, &smax, keys, nkeys, &pform);
   /* Do we really need to store all this? no struct?
      _ bstuff **tab, uint32_t *alen, uint32_t *blen, uint32_t *salt,
      gencode *final, uint32_t *scramble, uint32_t smax, key *keys, uint32_t nkeys,
@@ -63,11 +63,12 @@ CODE:
   av_push(xshash, newSViv(alen));
   av_push(xshash, newSViv(blen));
   av_push(xshash, newSViv(salt));
-  av_push(xshash, newSViv(PTR2IV(&final)));
+  av_push(xshash, newSViv(PTR2IV(&final))); /* XXX really on the stack? */
   av_push(xshash, newSViv(PTR2IV(scramble)));
   av_push(xshash, newSViv(smax));
   av_push(xshash, newSViv(PTR2IV(keys)));
   av_push(xshash, newSViv(nkeys));
+  av_push(xshash, newSViv(PTR2IV(&pform))); /* XXX really on the stack? */
   result = newAV();
   av_push(result, newRV((SV*)xshash));
   options = newAV();
