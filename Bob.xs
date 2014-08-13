@@ -26,7 +26,8 @@ new(class, dict, ...)
   SV*  class
   SV*  dict
 CODE:
-  AV *result, *xshash, *options;
+  AV *result, *xshash;
+  HV *options;
   int i;
   hashform pform;
   uint32_t nkeys;                                          /* number of keys */
@@ -71,9 +72,9 @@ CODE:
   av_push(xshash, newSViv(PTR2IV(&pform))); /* XXX really on the stack? */
   result = newAV();
   av_push(result, newRV((SV*)xshash));
-  options = newAV();
+  options = newHV();
   for (i=2; i<items; i++) { /* CHECKME */
-    av_push(options, ST(i));
+    hv_store_ent(options, ST(i), newSViv(1), 0);
   }
   av_push(result, newRV((SV*)options));
   RETVAL = sv_bless(newRV_noinc((SV*)result), gv_stashpv(__PACKAGE__, GV_ADDWARN));

@@ -1,7 +1,7 @@
 CFLAGS = -O
 
 .cc.o:
-	gcc $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $<
 
 O_TEST = lookupa.o recycle.o test_hash.o testperf.o
 O_TEST1 = lookupa.o recycle.o words_hash.o testperf.o
@@ -11,11 +11,12 @@ WORDS  = /usr/share/dict/words
 all: perfect test
 
 perfect : $(OBJECTS)
-	gcc -o perfect $(OBJECTS) -lm
+	$(CC) -o perfect $(OBJECTS) -lm
+
 test : $(O_TEST)
-	gcc -o test $(O_TEST) -lm
+	$(CC) -o test $(O_TEST) -lm
 test1 : $(O_TEST1)
-	gcc -o test1 $(O_TEST1) -lm
+	$(CC) -o test1 $(O_TEST1) -lm
 
 check: test test1
 	./test -nm < samperf.txt | sort -n | perl -anle'print $$F[0]'|\
