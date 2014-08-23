@@ -17,7 +17,8 @@ push(@extras,
 
 #TODO: integrate into proper build and depend rules
 if (! -e "bin/perfect") {
-  system($Config{'make'}, '-f', "Makefile.orig");
+  my $cc = $Config{cc};
+  system($Config{'make'}, "-f", "Makefile.orig", "CC=$cc");
 }
 
 WriteMakefile(
